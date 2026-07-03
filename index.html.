@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    text-align:center;
+    width:100%;
+}
+
+.logo{
+    font-size:60px;
+    font-weight:bold;
+    color:#4285F4;
+    margin-bottom:30px;
+}
+
+.search-box{
+    width:90%;
+    max-width:600px;
+    margin:auto;
+    display:flex;
+    border:1px solid #dcdcdc;
+    border-radius:30px;
+    padding:10px 20px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.15);
+}
+
+.search-box:hover{
+    box-shadow:0 3px 10px rgba(0,0,0,0.25);
+}
+
+.search-box input{
+    flex:1;
+    border:none;
+    outline:none;
+    font-size:18px;
+    padding:10px;
+}
+
+.search-btn{
+    margin-top:25px;
+    padding:12px 35px;
+    font-size:16px;
+    border:none;
+    background:#4285F4;
+    color:white;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.search-btn:hover{
+    background:#1a73e8;
+}
+
+.status{
+    margin-top:20px;
+    color:green;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="logo">Search</div>
+
+<form id="searchForm">
+    <div class="search-box">
+        <input
+            type="text"
+            id="searchInput"
+            name="query"
+            placeholder="Search..."
+            required>
+    </div>
+
+    <button class="search-btn" type="submit">
+        Search
+    </button>
+</form>
+
+<div class="status" id="status"></div>
+
+</div>
+
+<script>
+document.getElementById("searchForm").addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    const text = document.getElementById("searchInput").value;
+
+    // Replace this with your actual FormInit endpoint
+    const FORMINIT_URL = "YOUR_FORM_ENDPOINT";
+
+    try{
+
+        const response = await fetch(FORMINIT_URL,{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                search:text,
+                time:new Date().toISOString()
+            })
+        });
+
+        if(response.ok){
+            document.getElementById("status").innerHTML="Search submitted successfully!";
+            document.getElementById("searchInput").value="";
+        }else{
+            document.getElementById("status").innerHTML="Submission failed.";
+        }
+
+    }catch(err){
+        document.getElementById("status").innerHTML="Network error.";
+        console.log(err);
+    }
+
+});
+</script>
+
+</body>
+</html>
